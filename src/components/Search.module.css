@@ -1,0 +1,21 @@
+.search-section {
+  width: 100%;
+  padding: 2rem;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.search-form input {
+  padding: 0.5rem;
+  font-size: 16px;
+  border: 1px solid #808080;
+  border-radius: 8px;
+}
+
+.search-form input:hover {
+  border: 1px solid var(--violet);
+}
