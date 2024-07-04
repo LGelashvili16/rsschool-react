@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import classes from "./Search.module.css";
+import { EmptyProps } from "../constants/types";
 
-type SearchState = {
+interface SearchState {
   searchTerm: string;
-};
-class Search extends Component<null, SearchState> {
+}
+
+class Search extends Component<EmptyProps, SearchState> {
   state = {
     searchTerm: "",
   };
