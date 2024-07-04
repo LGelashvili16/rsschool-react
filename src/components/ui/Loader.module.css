@@ -1,0 +1,51 @@
+.loading {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.loading-spinner {
+  position: relative;
+  width: 70px;
+  height: 70px;
+}
+
+.loading-spinner div:first-child {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  background: #242424;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.loading-spinner div:last-child {
+  width: 70px;
+  height: 70px;
+  background: conic-gradient(
+    transparent 10% 20%,
+    #4604c0 5% 30%,
+    rgb(119, 158, 243) 70%,
+    transparent 90%
+  );
+  border-radius: 50%;
+  animation: rotate 1s infinite normal ease;
+}
+
+.loading-txt p {
+  font-size: 20px;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

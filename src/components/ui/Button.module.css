@@ -1,0 +1,15 @@
+.btn {
+  border: 1px solid var(--violet2);
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.btn:hover {
+  box-shadow: 0 0 20px 4px var(--violet);
+}

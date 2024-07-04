@@ -1,1 +1,1 @@
-export const booksURL = "https://stapi.co/api/v2/rest/book/search";
+export const swapiPeopleURL = "https://swapi.dev/api/people/";

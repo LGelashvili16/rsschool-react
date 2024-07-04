@@ -1,30 +1,38 @@
 import { Component } from "react";
 import Search from "./components/Search";
-import BookList from "./components/BookList";
-import { booksURL } from "./constants/apiConfig";
+import PeopleList from "./components/peopleList/PeopleList";
+import { swapiPeopleURL } from "./constants/apiConfig";
 import { EmptyProps } from "./constants/types";
+import classes from "./App.module.css";
+import Pagination from "./components/Pagination";
+import Loader from "./components/ui/Loader";
 
 export interface AppState {
-  books: Record<string, unknown>[];
+  data: Record<string, unknown>;
   loading: boolean;
   error: string | null;
+  searchTerm: string;
 }
+
 class App extends Component<EmptyProps, AppState> {
   state = {
-    books: [],
+    data: { results: [], previous: null, next: null },
     loading: true,
     error: null,
+    searchTerm: "",
   };
 
-  componentDidMount(): void {
-    this.fetchBooks();
-  }
+  fetchPeople = async (endpoint: string = "", searchTerm: string = "") => {
+    this.setState({ loading: true });
 
-  fetchBooks = async () => {
+    let url = swapiPeopleURL;
+
+    if (endpoint !== "" && searchTerm === "") url = endpoint;
+    if (searchTerm !== "" && endpoint === "")
+      url = `${swapiPeopleURL}?search=${searchTerm}`;
+
     try {
-      const response = await fetch(
-        `${booksURL}/?pageNumber=${0}&pageSize=${20}`,
-      );
+      const response = await fetch(`${url}`);
 
       if (!response.ok) {
         throw new Error(`An error occurred: ${response.status}`);
@@ -32,22 +40,40 @@ class App extends Component<EmptyProps, AppState> {
 
       const data = await response.json();
 
-      this.setState({ books: data.books, loading: false });
+      this.setState({ data: data, loading: false });
     } catch (error) {
       const errorMessage = (error as Error).message;
       this.setState({ error: errorMessage, loading: false });
     }
   };
 
+  previousClickHandler = () => {
+    if (this.state.data.previous) {
+      this.fetchPeople(this.state.data.previous);
+    }
+  };
+  nextClickHandler = () => {
+    if (this.state.data.next) {
+      this.fetchPeople(this.state.data.next);
+    }
+  };
+
   render() {
-    console.log(this.state.books);
     return (
-      <div>
-        <Search />
-        {this.state.loading && <p>Loading...</p>}
-        {this.state.error && <p>Error: {this.state.error}</p>}
-        <BookList books={this.state.books} />
-      </div>
+      <>
+        <Search fetchPeople={this.fetchPeople} />
+        {this.state.loading && <Loader />}
+        {this.state.error && (
+          <div className={classes["error-msg"]}>
+            <h2>Error: {this.state.error}</h2>
+          </div>
+        )}
+        {!this.state.loading && <PeopleList people={this.state.data.results} />}
+        <Pagination
+          onPrevious={this.previousClickHandler}
+          onNext={this.nextClickHandler}
+        />
+      </>
     );
   }
 }
