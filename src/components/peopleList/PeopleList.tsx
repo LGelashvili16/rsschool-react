@@ -11,6 +11,7 @@ class PeopleList extends React.Component<PeopleListProps> {
     return (
       <section className={classes["people-list-wrapper"]}>
         <h2>Search Results</h2>
+        {this.props.people.length === 0 && <h3>No result</h3>}
         <div className={classes["people-list"]}>
           {this.props.people.map((person) => {
             return <Person key={person.url as string} person={person} />;

@@ -22,6 +22,10 @@ class App extends Component<EmptyProps, AppState> {
     searchTerm: "",
   };
 
+  componentDidMount(): void {
+    this.fetchPeople();
+  }
+
   fetchPeople = async (endpoint: string = "", searchTerm: string = "") => {
     this.setState({ loading: true });
 
