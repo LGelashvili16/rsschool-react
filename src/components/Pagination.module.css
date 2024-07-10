@@ -1,0 +1,12 @@
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.pagination button {
+  max-width: 200px;
+  width: 100%;
+  border: 1px solid var(--violet2);
+}
