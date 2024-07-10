@@ -23,7 +23,11 @@ class App extends Component<EmptyProps, AppState> {
   };
 
   componentDidMount(): void {
-    this.fetchPeople();
+    const searchedTerm = localStorage.getItem("searchTerm");
+
+    if (searchedTerm === null) {
+      this.fetchPeople();
+    }
   }
 
   fetchPeople = async (endpoint: string = "", searchTerm: string = "") => {
