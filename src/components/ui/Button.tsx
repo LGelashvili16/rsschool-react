@@ -1,4 +1,3 @@
-import React from "react";
 import classes from "./Button.module.css";
 
 interface ButtonProps {
@@ -6,14 +5,12 @@ interface ButtonProps {
   onClick?: () => void;
 }
 
-class Button extends React.Component<ButtonProps> {
-  render() {
-    return (
-      <button className={classes.btn} onClick={this.props.onClick}>
-        {this.props.name}
-      </button>
-    );
-  }
-}
+const Button = ({ name, onClick }: ButtonProps) => {
+  return (
+    <button className={classes.btn} onClick={onClick}>
+      {name}
+    </button>
+  );
+};
 
 export default Button;
