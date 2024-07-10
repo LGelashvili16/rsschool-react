@@ -1,4 +1,3 @@
-import React from "react";
 import classes from "./Pagination.module.css";
 import Button from "./ui/Button";
 
@@ -7,15 +6,13 @@ interface PaginationProps {
   onNext: () => void;
 }
 
-class Pagination extends React.Component<PaginationProps> {
-  render(): React.ReactNode {
-    return (
-      <div className={classes.pagination}>
-        <Button name="Previous" onClick={this.props.onPrevious} />
-        <Button name="Next" onClick={this.props.onNext} />
-      </div>
-    );
-  }
-}
+const Pagination = ({ onPrevious, onNext }: PaginationProps) => {
+  return (
+    <div className={classes.pagination}>
+      <Button name="Previous" onClick={onPrevious} />
+      <Button name="Next" onClick={onNext} />
+    </div>
+  );
+};
 
 export default Pagination;
