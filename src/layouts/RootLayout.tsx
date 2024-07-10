@@ -7,7 +7,7 @@ const RootLayout = () => {
 
   useEffect(() => {
     navigate("home");
-  }, []);
+  }, [navigate]);
 
   return (
     <>

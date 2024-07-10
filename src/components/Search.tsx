@@ -23,7 +23,7 @@ const Search = ({ fetchPeople }: SearchProps) => {
     } else {
       setSearchTerm("");
     }
-  }, []);
+  }, [fetchPeople]);
 
   const searchSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
