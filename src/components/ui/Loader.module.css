@@ -1,4 +1,8 @@
 .loading {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
@@ -6,10 +10,23 @@
   gap: 1rem;
 }
 
+.loading-wrapper {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  gap: 0.7rem;
+  border-radius: 1rem;
+  background-color: #7e67e63a;
+  backdrop-filter: blur(10px);
+  padding: 1.5rem 1.5rem;
+}
+
 .loading-spinner {
   position: relative;
   width: 70px;
   height: 70px;
+  background-color: #ffffff6b;
+  border-radius: 50%;
 }
 
 .loading-spinner div:first-child {
@@ -28,17 +45,24 @@
   width: 70px;
   height: 70px;
   background: conic-gradient(
-    transparent 10% 20%,
-    #4604c0 5% 30%,
-    rgb(119, 158, 243) 70%,
-    transparent 90%
+    #8f90d8,
+    #370dce 20%,
+    #4604c0 35%,
+    #4240e4 40%,
+    #8f90d8
   );
   border-radius: 50%;
-  animation: rotate 1s infinite normal ease;
+  animation: rotate 0.7s linear infinite;
+}
+
+.loading-txt {
+  padding: 0.3rem 0.5rem;
+  border-radius: 5px;
 }
 
 .loading-txt p {
-  font-size: 20px;
+  font-size: 22px;
+  font-weight: 600;
 }
 
 @keyframes rotate {

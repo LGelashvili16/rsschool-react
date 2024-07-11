@@ -1,43 +1,40 @@
 import React, { useEffect, useState } from "react";
 import classes from "./Search.module.css";
 import Button from "./ui/Button";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 interface SearchProps {
-  fetchPeople: (endpoint: string, searchTerm: string) => void;
+  fetchData: (endpoint?: string, term?: string) => void;
 }
 
-const Search = ({ fetchPeople }: SearchProps) => {
-  const [searchTerm, setSearchTerm] = useState("");
+const Search = ({ fetchData }: SearchProps) => {
+  const [InputValue, setInputValue] = useState("");
   const [showWarning, setShowWarning] = useState(false);
   const [throwError, setThrowError] = useState(false);
+  const [localStorageTerm, setLocalStorageTerm] =
+    useLocalStorage("searchedTerm");
+
+  console.log("Search", localStorageTerm);
 
   useEffect(() => {
-    const searchedTerm = localStorage.getItem("searchTerm");
-
-    if (searchedTerm !== null) {
-      const searchTerm = JSON.parse(searchedTerm);
-
-      setSearchTerm(searchTerm);
-
-      fetchPeople("", searchTerm);
-    } else {
-      setSearchTerm("");
+    if (localStorageTerm) {
+      setInputValue(localStorageTerm);
+      fetchData("", localStorageTerm);
     }
-  }, [fetchPeople]);
+  }, [localStorageTerm, fetchData]);
 
   const searchSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    const inputValue = formData.get("searchTerm");
+    const inputValue = formData.get("searchTerm") as string;
 
-    if (typeof inputValue === "string") {
-      localStorage.setItem("searchTerm", JSON.stringify(inputValue.trim()));
-      fetchPeople("", inputValue.trim());
-    }
+    fetchData("", inputValue);
+    setLocalStorageTerm(inputValue);
+    setInputValue(inputValue);
   };
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    setInputValue(e.target.value);
   };
 
   const warningHandler = () => {
@@ -78,7 +75,7 @@ const Search = ({ fetchPeople }: SearchProps) => {
             type="search"
             name="searchTerm"
             placeholder="Type Search Term"
-            value={searchTerm}
+            value={InputValue}
             onChange={inputChangeHandler}
           />
           <Button name="Search" />

@@ -1,0 +1,18 @@
+.error {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  background: linear-gradient(#eb93936e, #eb20207a);
+  color: #f3c5c5;
+  padding: 3rem;
+  border-radius: 1rem;
+  transform: translate(-50%, -50%);
+}
+
+.error p {
+  font-size: 18px;
+  font-weight: 600;
+}

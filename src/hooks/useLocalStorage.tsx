@@ -1,9 +1,18 @@
-// import { useState } from "react";
+import { useEffect, useState } from "react";
 
-// const useLocalStorage = (term = "") => {
-//   const [localStorageTerm, setLocalStorageTerm] = useState("");
+const useLocalStorage = (
+  key: string,
+): [string | null, React.Dispatch<React.SetStateAction<string>>] => {
+  const [localStorageTerm, setLocalStorageTerm] = useState(() => {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : "";
+  });
 
-//   return [localStorageTerm];
-// };
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(localStorageTerm));
+  }, [key, localStorageTerm]);
 
-// export default useLocalStorage;
+  return [localStorageTerm, setLocalStorageTerm] as const;
+};
+
+export default useLocalStorage;
