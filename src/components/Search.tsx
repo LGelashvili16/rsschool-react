@@ -9,12 +9,9 @@ interface SearchProps {
 
 const Search = ({ fetchData }: SearchProps) => {
   const [InputValue, setInputValue] = useState("");
-  const [showWarning, setShowWarning] = useState(false);
   const [throwError, setThrowError] = useState(false);
   const [localStorageTerm, setLocalStorageTerm] =
     useLocalStorage("searchedTerm");
-
-  console.log("Search", localStorageTerm);
 
   useEffect(() => {
     if (localStorageTerm) {
@@ -37,10 +34,6 @@ const Search = ({ fetchData }: SearchProps) => {
     setInputValue(e.target.value);
   };
 
-  const warningHandler = () => {
-    setShowWarning(!showWarning);
-  };
-
   const throwErrorHandler = () => {
     setThrowError(true);
   };
@@ -52,24 +45,6 @@ const Search = ({ fetchData }: SearchProps) => {
   return (
     <>
       <section className={classes["search-section"]}>
-        <div
-          className={`${classes["warning-wrapper"]} ${showWarning ? "" : classes.dim}`}
-        >
-          {showWarning && (
-            <p className={classes.warning}>
-              <span>
-                <b>WARNING:</b>
-              </span>{" "}
-              If you want to send a request to fetch all data, please click the
-              'Search' button after deleting the search term.
-            </p>
-          )}
-          <Button
-            name={showWarning ? "Hide Warning" : "Show Warning"}
-            onClick={warningHandler}
-          />
-        </div>
-
         <form className={classes["search-form"]} onSubmit={searchSubmitHandler}>
           <input
             type="search"

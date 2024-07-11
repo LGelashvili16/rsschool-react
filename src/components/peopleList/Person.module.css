@@ -6,6 +6,7 @@
   border: 1px solid #808080;
   border-radius: 0.5rem;
   transition: border 0.2s;
+  cursor: pointer;
 }
 
 .person:hover {

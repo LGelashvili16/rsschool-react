@@ -8,9 +8,11 @@ interface PaginationProps {
 
 const Pagination = ({ onPrevious, onNext }: PaginationProps) => {
   return (
-    <div className={classes.pagination}>
-      <Button name="Previous" onClick={onPrevious} />
-      <Button name="Next" onClick={onNext} />
+    <div className={classes["pagination-wrapper"]}>
+      <div className={classes.pagination}>
+        <Button name="Previous" onClick={onPrevious} />
+        <Button name="Next" onClick={onNext} />
+      </div>
     </div>
   );
 };

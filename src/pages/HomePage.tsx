@@ -5,6 +5,7 @@ import useLocalStorage from "../hooks/useLocalStorage";
 import useFetchData from "../hooks/useFetchData";
 import classes from "./HomePage.module.css";
 import Loader from "../components/ui/Loader";
+import { Outlet } from "react-router-dom";
 
 const HomePage = () => {
   const { data, loading, error, fetchPeople } = useFetchData();
@@ -28,7 +29,10 @@ const HomePage = () => {
         </div>
       )}
 
-      <PeopleList data={data} fetchPeople={fetchPeople} />
+      <section className={classes["search-results"]}>
+        <PeopleList data={data} fetchPeople={fetchPeople} />
+        <div className={classes["person-details"]}>{<Outlet />}</div>
+      </section>
     </>
   );
 };

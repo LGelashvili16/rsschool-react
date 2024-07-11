@@ -1,19 +1,20 @@
 import { useCallback, useState } from "react";
 import { swapiPeopleURL } from "../constants/apiConfig";
 
+interface SWAPIResponse {
+  results: { [key: string]: string | string[] }[];
+  previous: string | null;
+  next: string | null;
+}
 interface DataInterface {
-  data: {
-    results: Record<string, unknown>[];
-    previous: string | null;
-    next: string | null;
-  };
+  data: SWAPIResponse;
   loading: boolean;
   error: string | null;
   fetchPeople: (endpoint?: string, searchTerm?: string) => void;
 }
 
 const useFetchData = (): DataInterface => {
-  const [data, setData] = useState({
+  const [data, setData] = useState<SWAPIResponse>({
     results: [],
     previous: null,
     next: null,

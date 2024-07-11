@@ -26,7 +26,7 @@ const PeopleList = ({
   };
 
   return (
-    <section className={classes["people-list-wrapper"]}>
+    <div className={classes["people-list-wrapper"]}>
       <h2>Search Results</h2>
       {data.results.length === 0 && <h3>No result</h3>}
 
@@ -36,7 +36,7 @@ const PeopleList = ({
         })}
       </div>
       <Pagination onPrevious={previousClickHandler} onNext={nextClickHandler} />
-    </section>
+    </div>
   );
 };
 
