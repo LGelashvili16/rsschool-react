@@ -1,3 +1,4 @@
+import React from "react";
 import classes from "./Person.module.css";
 import { Link } from "react-router-dom";
 
@@ -5,9 +6,17 @@ interface PersonProps {
   person: Record<string, unknown>;
 }
 
+const clickHandler = (e: React.MouseEvent) => {
+  e.stopPropagation();
+};
+
 const Person = ({ person }: PersonProps) => {
   return (
-    <Link className={classes["person"]} to={`/home/${person.name}`}>
+    <Link
+      className={classes["person"]}
+      to={`/home/${person.name}`}
+      onClick={clickHandler}
+    >
       <h2>{person.name as string}</h2>
       <p>Eye Color: {person.eye_color as string}</p>
       <p>Height: {person.height as string}cm</p>

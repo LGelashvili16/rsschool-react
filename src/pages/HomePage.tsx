@@ -1,21 +1,27 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import PeopleList from "../components/peopleList/PeopleList";
 import Search from "../components/Search";
 import useLocalStorage from "../hooks/useLocalStorage";
 import useFetchData from "../hooks/useFetchData";
 import classes from "./HomePage.module.css";
 import Loader from "../components/ui/Loader";
-import { Outlet } from "react-router-dom";
+import { Outlet, useSearchParams } from "react-router-dom";
+import { GlobalContext } from "../context/GlobalContext";
 
 const HomePage = () => {
+  const [, setSearchParams] = useSearchParams();
   const { data, loading, error, fetchPeople } = useFetchData();
   const [localStorageTerm] = useLocalStorage("searchedTerm");
+  const { searchQuery, pageQuery } = useContext(GlobalContext);
+
+  console.log("Home");
 
   useEffect(() => {
     if (localStorageTerm === "" || localStorageTerm === null) {
-      fetchPeople();
+      fetchPeople("", "", `?page=${pageQuery}`);
+      setSearchParams({ page: String(pageQuery), search: searchQuery });
     }
-  }, [localStorageTerm, fetchPeople]);
+  }, [localStorageTerm, pageQuery, searchQuery, fetchPeople, setSearchParams]);
 
   return (
     <>
