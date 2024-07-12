@@ -54,7 +54,12 @@ const PeopleList = ({
           return <Person key={person.url as string} person={person} />;
         })}
       </div>
-      <Pagination onPrevious={previousClickHandler} onNext={nextClickHandler} />
+      {data.results.length > 0 && (
+        <Pagination
+          onPrevious={previousClickHandler}
+          onNext={nextClickHandler}
+        />
+      )}
     </div>
   );
 };

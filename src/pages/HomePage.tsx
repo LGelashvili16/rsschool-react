@@ -14,7 +14,7 @@ const HomePage = () => {
   const [localStorageTerm] = useLocalStorage("searchedTerm");
   const { searchQuery, pageQuery } = useContext(GlobalContext);
 
-  console.log("Home");
+  console.log(data);
 
   useEffect(() => {
     if (localStorageTerm === "" || localStorageTerm === null) {
