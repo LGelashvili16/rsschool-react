@@ -4,6 +4,7 @@ import ErrorPage from "./pages/ErrorPage";
 import HomePage from "./pages/HomePage";
 import PersonDetails from "./components/peopleList/PersonDetails";
 import GlobalContextProvider from "./context/GlobalContext";
+import AboutPage from "./pages/AboutPage";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
             element: <PersonDetails />,
           },
         ],
+      },
+      {
+        path: "about",
+        element: <AboutPage />,
       },
     ],
   },

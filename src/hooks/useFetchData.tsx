@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { swapiPeopleURL } from "../constants/apiConfig";
 
 interface SWAPIResponse {
+  count: number;
   results: { [key: string]: string | string[] }[];
   previous: string | null;
   next: string | null;
@@ -15,6 +16,7 @@ interface DataInterface {
 
 const useFetchData = (): DataInterface => {
   const [data, setData] = useState<SWAPIResponse>({
+    count: 0,
     results: [],
     previous: null,
     next: null,

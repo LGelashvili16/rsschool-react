@@ -18,8 +18,6 @@ const GlobalContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [pageQuery, setPageQuery] = useState(1);
 
-  console.log("Context");
-
   const updateQueryStringHandler = (query: string) => {
     setSearchQuery(query);
   };

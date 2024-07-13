@@ -12,15 +12,14 @@ const HomePage = () => {
   const [, setSearchParams] = useSearchParams();
   const { data, loading, error, fetchPeople } = useFetchData();
   const [localStorageTerm] = useLocalStorage("searchedTerm");
-  const { searchQuery, pageQuery } = useContext(GlobalContext);
-
-  console.log(data);
+  const { pageQuery, searchQuery } = useContext(GlobalContext);
 
   useEffect(() => {
     if (localStorageTerm === "" || localStorageTerm === null) {
       fetchPeople("", "", `?page=${pageQuery}`);
       setSearchParams({ page: String(pageQuery), search: searchQuery });
     }
+    // Needs to be fixed
   }, [localStorageTerm, pageQuery, searchQuery, fetchPeople, setSearchParams]);
 
   return (
@@ -37,7 +36,9 @@ const HomePage = () => {
 
       <section className={classes["search-results"]}>
         <PeopleList data={data} fetchPeople={fetchPeople} />
-        <div className={classes["person-details"]}>{<Outlet />}</div>
+        <div className={classes["person-details"]}>
+          <Outlet />
+        </div>
       </section>
     </>
   );

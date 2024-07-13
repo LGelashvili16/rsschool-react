@@ -8,11 +8,9 @@
   align-items: center;
   gap: 1rem;
   padding: 2rem;
-  position: relative;
 }
 
 .search-form {
-  margin-top: 5rem;
   display: flex;
   align-items: center;
   gap: 1rem;

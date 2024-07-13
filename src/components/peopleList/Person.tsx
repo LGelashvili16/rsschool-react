@@ -6,11 +6,10 @@ interface PersonProps {
   person: Record<string, unknown>;
 }
 
-const clickHandler = (e: React.MouseEvent) => {
-  e.stopPropagation();
-};
-
 const Person = ({ person }: PersonProps) => {
+  const clickHandler = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
   return (
     <Link
       className={classes["person"]}

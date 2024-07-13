@@ -1,22 +1,31 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import classes from "./PersonDetails.module.css";
 import useFetchData from "../../hooks/useFetchData";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import Loader from "../ui/Loader";
+import { GlobalContext } from "../../context/GlobalContext";
 
 const PersonDetails = () => {
   const navigate = useNavigate();
   const params = useParams();
+  const [, setSearchParams] = useSearchParams();
   const { data, loading, error, fetchPeople } = useFetchData();
+  const { pageQuery, searchQuery } = useContext(GlobalContext);
+
+  useEffect(() => {
+    if (params.id) {
+      setSearchParams({ page: String(pageQuery), details: params.id });
+    }
+  }, [pageQuery, params.id, setSearchParams]);
 
   useEffect(() => {
     if (params.id) {
       fetchPeople("", params.id);
     }
-  }, [params, fetchPeople]);
+  }, [params.id, fetchPeople]);
 
   const closeTabHandler = () => {
-    navigate("..");
+    navigate(`/home/?page=${pageQuery}&search=${searchQuery}`);
   };
 
   let content;
@@ -54,7 +63,11 @@ const PersonDetails = () => {
     );
   }
 
-  return <div className={classes["person-details-wrapper"]}>{content}</div>;
+  return (
+    <div className={classes["person-details-wrapper"]}>
+      {loading ? <Loader /> : content}
+    </div>
+  );
 };
 
 export default PersonDetails;

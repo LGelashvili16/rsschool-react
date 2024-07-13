@@ -1,40 +1,51 @@
 import classes from "./PeopleList.module.css";
 import Person from "./Person";
 import Pagination from "../Pagination";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { GlobalContext } from "../../context/GlobalContext";
+import { useContext } from "react";
 
 const PeopleList = ({
   data,
   fetchPeople,
 }: {
   data: {
+    count: number;
     results: Record<string, unknown>[];
     previous: string | null;
     next: string | null;
   };
-  fetchPeople: (endpoint?: string, term?: string) => void;
+  fetchPeople: (endpoint?: string, term?: string, query?: string) => void;
 }) => {
   const navigate = useNavigate();
+  const params = useParams();
+  const { pageQuery, searchQuery, updatePage } = useContext(GlobalContext);
 
   const previousClickHandler = () => {
     if (data.previous) {
-      fetchPeople(data.previous);
+      // fetchPeople(data.previous);
+      fetchPeople("", "", `?page=${pageQuery - 1}`);
+      updatePage(pageQuery - 1);
     }
   };
 
   const nextClickHandler = () => {
     if (data.next) {
-      fetchPeople(data.next);
+      // fetchPeople(data.next);
+      fetchPeople("", "", `?page=${pageQuery + 1}`);
+      updatePage(pageQuery + 1);
     }
   };
 
   const sectionClickHandler = () => {
-    navigate("/home");
+    if (params.id) {
+      navigate(`/home/?page=${pageQuery}&search=${searchQuery}`);
+    }
   };
 
   const sectionKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter" || e.key === " ") {
-      navigate("/home");
+      params.id && navigate(`/home/?page=${pageQuery}&search=${searchQuery}`);
     }
   };
 
@@ -56,8 +67,10 @@ const PeopleList = ({
       </div>
       {data.results.length > 0 && (
         <Pagination
+          count={data.count}
           onPrevious={previousClickHandler}
           onNext={nextClickHandler}
+          fetchPeople={fetchPeople}
         />
       )}
     </div>

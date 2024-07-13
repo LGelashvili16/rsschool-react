@@ -5,12 +5,28 @@
 .pagination {
   display: flex;
   justify-content: flex-end;
-  gap: 2rem;
-  padding: 2rem;
+  gap: 1rem;
 }
 
 .pagination button {
-  max-width: 200px;
-  width: 100%;
+  /* max-width: 150px; */
+  /* width: 100%; */
   border: 1px solid var(--violet2);
+}
+
+.pages-btn {
+  max-width: 100px;
+  padding: 1rem;
+  background: transparent;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.pages-btn:hover {
+  background: var(--violet2);
+}
+
+.pages-btn:disabled {
+  background: var(--violet2);
+  color: #fff;
 }
