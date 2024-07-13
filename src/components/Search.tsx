@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import classes from "./Search.module.css";
 import Button from "./ui/Button";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { useSearchParams } from "react-router-dom";
 
 interface SearchProps {
   fetchData: (endpoint?: string, term?: string) => void;
 }
 
 const Search = ({ fetchData }: SearchProps) => {
+  const [, setSearchParams] = useSearchParams();
   const [InputValue, setInputValue] = useState("");
   const [throwError, setThrowError] = useState(false);
   const [localStorageTerm, setLocalStorageTerm] =
@@ -17,8 +19,9 @@ const Search = ({ fetchData }: SearchProps) => {
     if (localStorageTerm) {
       setInputValue(localStorageTerm);
       fetchData("", localStorageTerm);
+      setSearchParams({ page: String(1), search: localStorageTerm });
     }
-  }, [localStorageTerm, fetchData]);
+  }, [localStorageTerm, fetchData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const searchSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,6 +29,7 @@ const Search = ({ fetchData }: SearchProps) => {
     const inputValue = formData.get("searchTerm") as string;
 
     fetchData("", inputValue);
+    setSearchParams({ page: String(1), search: inputValue });
     setLocalStorageTerm(inputValue);
     setInputValue(inputValue);
   };

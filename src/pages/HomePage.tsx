@@ -19,8 +19,7 @@ const HomePage = () => {
       fetchPeople("", "", `?page=${pageQuery}`);
       setSearchParams({ page: String(pageQuery), search: searchQuery });
     }
-    // Needs to be fixed
-  }, [localStorageTerm, pageQuery, searchQuery, fetchPeople, setSearchParams]);
+  }, [localStorageTerm, pageQuery, searchQuery, fetchPeople]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

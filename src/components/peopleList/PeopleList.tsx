@@ -19,23 +19,7 @@ const PeopleList = ({
 }) => {
   const navigate = useNavigate();
   const params = useParams();
-  const { pageQuery, searchQuery, updatePage } = useContext(GlobalContext);
-
-  const previousClickHandler = () => {
-    if (data.previous) {
-      // fetchPeople(data.previous);
-      fetchPeople("", "", `?page=${pageQuery - 1}`);
-      updatePage(pageQuery - 1);
-    }
-  };
-
-  const nextClickHandler = () => {
-    if (data.next) {
-      // fetchPeople(data.next);
-      fetchPeople("", "", `?page=${pageQuery + 1}`);
-      updatePage(pageQuery + 1);
-    }
-  };
+  const { pageQuery, searchQuery } = useContext(GlobalContext);
 
   const sectionClickHandler = () => {
     if (params.id) {
@@ -66,12 +50,7 @@ const PeopleList = ({
         })}
       </div>
       {data.results.length > 0 && (
-        <Pagination
-          count={data.count}
-          onPrevious={previousClickHandler}
-          onNext={nextClickHandler}
-          fetchPeople={fetchPeople}
-        />
+        <Pagination count={data.count} fetchPeople={fetchPeople} />
       )}
     </div>
   );
