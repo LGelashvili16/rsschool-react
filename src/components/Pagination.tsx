@@ -27,7 +27,6 @@ const Pagination = ({ count, fetchPeople }: PaginationProps) => {
 
   const previousClickHandler = () => {
     if (activePage > 1) {
-      // fetchPeople(data.previous);
       fetchPeople("", "", `?page=${pageQuery - 1}`);
       updatePage(pageQuery - 1);
       setActivePage((prev) => prev - 1);
@@ -36,7 +35,6 @@ const Pagination = ({ count, fetchPeople }: PaginationProps) => {
 
   const nextClickHandler = () => {
     if (activePage < amountOfPages) {
-      // fetchPeople(data.previous);
       fetchPeople("", "", `?page=${pageQuery + 1}`);
       updatePage(pageQuery + 1);
       setActivePage((prev) => prev + 1);

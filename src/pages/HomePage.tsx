@@ -20,7 +20,6 @@ const HomePage = () => {
       setSearchParams({ page: String(pageQuery), search: searchQuery });
     }
   }, [localStorageTerm, pageQuery, searchQuery, fetchPeople]); // eslint-disable-line react-hooks/exhaustive-deps
-
   return (
     <>
       <Search fetchData={fetchPeople} />

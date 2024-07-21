@@ -54,6 +54,7 @@ const Search = ({ fetchData }: SearchProps) => {
             type="search"
             name="searchTerm"
             placeholder="Type Search Term"
+            data-testid="search-input"
             value={InputValue}
             onChange={inputChangeHandler}
           />
