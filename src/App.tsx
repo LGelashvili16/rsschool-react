@@ -5,6 +5,8 @@ import HomePage from "./pages/HomePage";
 import PersonDetails from "./components/peopleList/PersonDetails";
 import GlobalContextProvider from "./context/GlobalContext";
 import AboutPage from "./pages/AboutPage";
+import { Provider } from "react-redux";
+import store from "./features/store";
 
 const router = createBrowserRouter([
   {
@@ -37,7 +39,9 @@ const router = createBrowserRouter([
 const App = () => {
   return (
     <GlobalContextProvider>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </GlobalContextProvider>
   );
 };

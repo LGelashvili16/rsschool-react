@@ -7,12 +7,16 @@ import classes from "./HomePage.module.css";
 import Loader from "../components/ui/Loader";
 import { Outlet, useSearchParams } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
+import { usePersonListQuery } from "../features/api";
 
 const HomePage = () => {
   const [, setSearchParams] = useSearchParams();
   const { data, loading, error, fetchPeople } = useFetchData();
   const [localStorageTerm] = useLocalStorage("searchedTerm");
   const { pageQuery, searchQuery } = useContext(GlobalContext);
+  const { data: testData } = usePersonListQuery();
+
+  console.log("TEST!!!", testData);
 
   useEffect(() => {
     if (localStorageTerm === "" || localStorageTerm === null) {
