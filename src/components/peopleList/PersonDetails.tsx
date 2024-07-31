@@ -1,47 +1,67 @@
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import classes from "./PersonDetails.module.css";
-import useFetchData from "../../hooks/useFetchData";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import Loader from "../ui/Loader";
-import { GlobalContext } from "../../context/GlobalContext";
+import { usePersonQuery } from "../../api/api";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
+import { personSliceActions } from "../../store/PersonSlice";
 
 const PersonDetails = () => {
   const navigate = useNavigate();
   const params = useParams();
   const [, setSearchParams] = useSearchParams();
-  const { data, loading, error, fetchPeople } = useFetchData();
-  const { pageQuery, searchQuery } = useContext(GlobalContext);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const searchedPerson = useSelector(
+    (state: RootState) => state.person.searchedPerson,
+  );
+  const currentPage = useSelector(
+    (state: RootState) => state.personList.currentPage,
+  );
+  const searchTerm = useSelector(
+    (state: RootState) => state.personList.searchTerm,
+  );
+
+  const { data, isFetching, isError, isUninitialized } = usePersonQuery({
+    name: searchedPerson,
+  });
 
   useEffect(() => {
     if (params.id) {
-      setSearchParams({ page: String(pageQuery), details: params.id });
+      setSearchParams({ details: params.id });
     }
-  }, [pageQuery, params.id, setSearchParams]);
+  }, [params.id, setSearchParams]);
 
   useEffect(() => {
-    if (params.id) {
-      fetchPeople("", params.id);
+    if (data) {
+      dispatch(personSliceActions.updatePersonDetails(data.results));
     }
-  }, [params.id, fetchPeople]);
+  }, [data, dispatch]);
 
   const closeTabHandler = () => {
-    navigate(`/home/?page=${pageQuery}&search=${searchQuery}`);
+    navigate(`/home/?page=${currentPage}&search=${searchTerm}`);
   };
+
+  if (isFetching || isUninitialized) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return (
+      <div className={classes["error-msg"]}>
+        <h2>Error:</h2>
+      </div>
+    );
+  }
 
   let content;
 
-  if (data.results.length > 0) {
+  if (data && data.results.length > 0) {
     const person = data.results[0];
 
     content = (
       <div className={classes["person-details-tab"]}>
-        {loading && <Loader />}
-        {error && (
-          <div className={classes["error-msg"]}>
-            <h2>Error: {error}</h2>
-          </div>
-        )}
-
         <div className={classes["person-details-title"]}>
           <h2>Person Details</h2>
           <button onClick={closeTabHandler}>Close Tab</button>
@@ -65,7 +85,7 @@ const PersonDetails = () => {
 
   return (
     <div className={classes["person-details-wrapper"]}>
-      {loading ? <Loader /> : content}
+      {isFetching ? <Loader /> : content}
     </div>
   );
 };

@@ -6,7 +6,7 @@ import PersonDetails from "./components/peopleList/PersonDetails";
 import GlobalContextProvider from "./context/GlobalContext";
 import AboutPage from "./pages/AboutPage";
 import { Provider } from "react-redux";
-import store from "./features/store";
+import store from "./store/store";
 
 const router = createBrowserRouter([
   {

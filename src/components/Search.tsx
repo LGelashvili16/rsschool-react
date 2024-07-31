@@ -3,32 +3,33 @@ import classes from "./Search.module.css";
 import Button from "./ui/Button";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { useSearchParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store/store";
+import { personListActions } from "../store/PersonListSlice";
 
-interface SearchProps {
-  fetchData: (endpoint?: string, term?: string) => void;
-}
-
-const Search = ({ fetchData }: SearchProps) => {
+const Search = () => {
   const [, setSearchParams] = useSearchParams();
   const [InputValue, setInputValue] = useState("");
   const [throwError, setThrowError] = useState(false);
   const [localStorageTerm, setLocalStorageTerm] =
     useLocalStorage("searchedTerm");
 
+  const dispatch = useDispatch<AppDispatch>();
+
   useEffect(() => {
     if (localStorageTerm) {
       setInputValue(localStorageTerm);
-      fetchData("", localStorageTerm);
+      dispatch(personListActions.updateSearchTerm(localStorageTerm));
       setSearchParams({ page: String(1), search: localStorageTerm });
     }
-  }, [localStorageTerm, fetchData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [localStorageTerm]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const searchSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const inputValue = formData.get("searchTerm") as string;
 
-    fetchData("", inputValue);
+    dispatch(personListActions.updateSearchTerm(inputValue));
     setSearchParams({ page: String(1), search: inputValue });
     setLocalStorageTerm(inputValue);
     setInputValue(inputValue);

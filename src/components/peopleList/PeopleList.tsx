@@ -2,12 +2,11 @@ import classes from "./PeopleList.module.css";
 import Person from "./Person";
 import Pagination from "../Pagination";
 import { useNavigate, useParams } from "react-router-dom";
-import { GlobalContext } from "../../context/GlobalContext";
-import { useContext } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const PeopleList = ({
   data,
-  fetchPeople,
 }: {
   data: {
     count: number;
@@ -15,21 +14,25 @@ const PeopleList = ({
     previous: string | null;
     next: string | null;
   };
-  fetchPeople: (endpoint?: string, term?: string, query?: string) => void;
 }) => {
   const navigate = useNavigate();
   const params = useParams();
-  const { pageQuery, searchQuery } = useContext(GlobalContext);
+  const currentPage = useSelector(
+    (state: RootState) => state.personList.currentPage,
+  );
+  const searchTerm = useSelector(
+    (state: RootState) => state.personList.searchTerm,
+  );
 
   const sectionClickHandler = () => {
     if (params.id) {
-      navigate(`/home/?page=${pageQuery}&search=${searchQuery}`);
+      navigate(`/home/?page=${currentPage}&search=${searchTerm}`);
     }
   };
 
   const sectionKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter" || e.key === " ") {
-      params.id && navigate(`/home/?page=${pageQuery}&search=${searchQuery}`);
+      params.id && navigate(`/home/?page=${currentPage}&search=${searchTerm}`);
     }
   };
 
@@ -49,9 +52,7 @@ const PeopleList = ({
           return <Person key={person.url as string} person={person} />;
         })}
       </div>
-      {data.results.length > 0 && (
-        <Pagination count={data.count} fetchPeople={fetchPeople} />
-      )}
+      {data.results.length > 0 && <Pagination count={data.count} />}
     </div>
   );
 };

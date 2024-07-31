@@ -1,14 +1,20 @@
 import React from "react";
 import classes from "./Person.module.css";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import { personSliceActions } from "../../store/PersonSlice";
 
 interface PersonProps {
   person: Record<string, unknown>;
 }
 
 const Person = ({ person }: PersonProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const clickHandler = (e: React.MouseEvent) => {
     e.stopPropagation();
+    dispatch(personSliceActions.updateSearchedPerson(person.name));
   };
   return (
     <Link

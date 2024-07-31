@@ -1,43 +1,55 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import PeopleList from "../components/peopleList/PeopleList";
 import Search from "../components/Search";
 import useLocalStorage from "../hooks/useLocalStorage";
-import useFetchData from "../hooks/useFetchData";
 import classes from "./HomePage.module.css";
 import Loader from "../components/ui/Loader";
 import { Outlet, useSearchParams } from "react-router-dom";
-import { GlobalContext } from "../context/GlobalContext";
-import { usePersonListQuery } from "../features/api";
+import { usePersonListQuery } from "../api/api";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const HomePage = () => {
   const [, setSearchParams] = useSearchParams();
-  const { data, loading, error, fetchPeople } = useFetchData();
   const [localStorageTerm] = useLocalStorage("searchedTerm");
-  const { pageQuery, searchQuery } = useContext(GlobalContext);
-  const { data: testData } = usePersonListQuery();
+  const currentPage = useSelector(
+    (state: RootState) => state.personList.currentPage,
+  );
+  const searchTerm = useSelector(
+    (state: RootState) => state.personList.searchTerm,
+  );
 
-  console.log("TEST!!!", testData);
+  const {
+    data: PersonListData,
+    isLoading,
+    isError,
+    isUninitialized,
+  } = usePersonListQuery({ page: currentPage, searchTerm: searchTerm });
 
   useEffect(() => {
     if (localStorageTerm === "" || localStorageTerm === null) {
-      fetchPeople("", "", `?page=${pageQuery}`);
-      setSearchParams({ page: String(pageQuery), search: searchQuery });
+      setSearchParams({ page: String(currentPage), search: searchTerm });
     }
-  }, [localStorageTerm, pageQuery, searchQuery, fetchPeople]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [localStorageTerm, currentPage, searchTerm]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (isLoading || isUninitialized) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return (
+      <div className={classes["error-msg"]}>
+        <h2>Oops! Something went wrong.</h2>
+      </div>
+    );
+  }
+
   return (
     <>
-      <Search fetchData={fetchPeople} />
-
-      {loading && <Loader />}
-
-      {error && (
-        <div className={classes["error-msg"]}>
-          <h2>Error: {error}</h2>
-        </div>
-      )}
+      <Search />
 
       <section className={classes["search-results"]}>
-        <PeopleList data={data} fetchPeople={fetchPeople} />
+        <PeopleList data={PersonListData} />
         <div className={classes["person-details"]}>
           <Outlet />
         </div>
