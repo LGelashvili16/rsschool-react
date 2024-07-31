@@ -20,6 +20,15 @@
   font-size: 22px;
 }
 
+.nav-theme-wrapper {
+  display: flex;
+  gap: 4rem;
+}
+
+.theme-control button {
+  /* background: #fff; */
+}
+
 .nav ul {
   list-style: none;
   display: flex;

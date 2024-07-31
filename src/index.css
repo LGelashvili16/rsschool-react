@@ -7,6 +7,18 @@
 
   --violet: #646cff;
   --violet2: #535bf2;
+  --background: #242424;
+  --text-color: #ffffffde;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+.light {
+  color-scheme: light;
+  background: radial-gradient(#fff, #8187c1, #3744cf, #a0a5ae);
+  color: #242424;
 }
 
 * {

@@ -3,10 +3,10 @@ import RootLayout from "./layouts/RootLayout";
 import ErrorPage from "./pages/ErrorPage";
 import HomePage from "./pages/HomePage";
 import PersonDetails from "./components/peopleList/PersonDetails";
-import GlobalContextProvider from "./context/GlobalContext";
 import AboutPage from "./pages/AboutPage";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import ThemeContextProvider from "./context/ThemeContext";
 
 const router = createBrowserRouter([
   {
@@ -38,11 +38,11 @@ const router = createBrowserRouter([
 
 const App = () => {
   return (
-    <GlobalContextProvider>
+    <ThemeContextProvider>
       <Provider store={store}>
         <RouterProvider router={router} />
       </Provider>
-    </GlobalContextProvider>
+    </ThemeContextProvider>
   );
 };
 
