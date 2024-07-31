@@ -9,6 +9,7 @@
 }
 
 .person-details-title {
+  color: var(--card-details-title-color);
   display: flex;
   justify-content: space-between;
   gap: 1rem;
@@ -19,7 +20,7 @@
 }
 
 .person-details-title button {
-  background: #ff00004b;
+  background: #f835358a;
   border: none;
   border-radius: 5px;
   padding: 0.3rem 0.5rem;
@@ -63,6 +64,7 @@
 
 .person-details-info ul li {
   font-size: 16px;
+  color: var(--card-details-text-color);
 }
 
 .error-msg {

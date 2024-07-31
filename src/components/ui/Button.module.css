@@ -5,7 +5,8 @@
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--main-btn-background);
+  color: var(--btn-text-color);
   cursor: pointer;
   transition: box-shadow 0.2s;
 }

@@ -18,7 +18,7 @@ const Header = () => {
         <div className={classes["nav-theme-wrapper"]}>
           <div className={classes["theme-control"]}>
             <button onClick={toggleThemeHandler}>
-              Switch to {isDark ? "Light 🌞" : "Dark 🌙"}
+              {isDark ? "Light Theme 🌞" : "Dark Theme 🌙"}
             </button>
           </div>
 

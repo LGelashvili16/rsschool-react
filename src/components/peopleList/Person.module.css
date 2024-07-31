@@ -1,34 +1,38 @@
 .person {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   padding: 1rem 1.5rem;
-  border: 1px solid #808080;
+  background: var(--card-background);
   border-radius: 0.5rem;
   transition: border 0.2s;
   cursor: pointer;
 }
 
-.person:hover {
-  border: 1px solid var(--violet);
+.person::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  background: linear-gradient(to top right, var(--violet), #b807e45e);
+  border-radius: calc(0.5rem + 3px);
+  transition: 0.3s;
+  z-index: -1;
+}
+
+.person:hover::after {
+  filter: blur(10px);
+  background: linear-gradient(to top right, var(--violet), #b807e4e8);
 }
 
 .person h2 {
-  color: #fff;
+  color: var(--card-title-color);
   font-size: 22px;
   transition: color 0.2s;
 }
 
-.person:hover h2 {
-  color: var(--violet);
-}
-
 .person p {
   font-size: 16px;
-  color: #808080;
+  color: var(--card-text-color);
   transition: color 0.2s;
-}
-
-.person:hover p {
-  color: #f1f1f1;
 }

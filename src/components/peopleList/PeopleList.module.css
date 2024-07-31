@@ -11,7 +11,7 @@
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  gap: 1.3rem;
 }
 
 .people-list-wrapper h2 {

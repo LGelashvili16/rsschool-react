@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 
@@ -5,25 +7,79 @@
   color: #ffffffde;
   background-color: #242424;
 
-  --violet: #646cff;
-  --violet2: #535bf2;
   --background: #242424;
   --text-color: #ffffffde;
-}
 
-.dark {
-  color-scheme: dark;
-}
+  --header-border-color: #596481;
+  --header-box-shadow-color: #596481;
 
-.light {
-  color-scheme: light;
-  background: radial-gradient(#fff, #8187c1, #3744cf, #a0a5ae);
-  color: #242424;
+  --theme-btn-background: #54535e;
+  --theme-btn-text-color: #ffffff;
+
+  --nav-text-color: #fff;
+
+  --card-background: #2e2c31cb;
+  --card-title-color: #fff;
+  --card-text-color: #c0c0c0;
+
+  --card-details-title-color: #fff;
+  --card-details-text-color: #fff;
+
+  --main-btn-background: #1a1a1a;
+  --btn-text-color: #fff;
+
+  --violet: #646cff;
+  --violet2: #535bf2;
 }
 
 * {
   margin: 0;
   padding: 0;
+}
+
+.dark {
+  background: #242424;
+  position: relative;
+  z-index: 1;
+}
+
+.light {
+  --main-btn-background: #646cff;
+  --header-border-color: #b0c2f3;
+  --header-box-shadow-color: #3d45e765;
+  --theme-btn-background: #202020;
+  --nav-text-color: #5a5a5a;
+  --card-background: #d8d5ddcb;
+  --card-title-color: #459beb;
+  --card-text-color: #303030;
+  --card-details-title-color: var(--violet);
+  --card-details-text-color: #3f3f3f;
+
+  color-scheme: light;
+  background: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+.dark:after,
+.light:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: rgba(135, 137, 230, 0.171);
+  filter: blur(220px);
+  z-index: -10;
+}
+
+.light:after {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(135, 137, 230, 0.959);
 }
 
 a {
