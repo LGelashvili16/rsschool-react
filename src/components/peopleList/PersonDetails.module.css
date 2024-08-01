@@ -1,0 +1,73 @@
+.person-details-wrapper {
+  padding: 2rem;
+}
+
+.person-details-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.person-details-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.person-details-title h2 {
+  font-size: 20px;
+}
+
+.person-details-title button {
+  background: #ff00004b;
+  border: none;
+  border-radius: 5px;
+  padding: 0.3rem 0.5rem;
+  font-family: inter;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+}
+
+.person-details-title button:hover {
+  background: #ff0000b9;
+}
+
+.person-details-title button:active {
+  transform: scale(0.98);
+}
+
+.person-details-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  box-shadow: 0 0 10px 3px var(--violet);
+  border-radius: 1rem;
+  padding: 2rem;
+}
+
+.person-details-info h3 {
+  color: var(--violet);
+  font-size: 18px;
+}
+
+.person-details-info ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.person-details-info ul li {
+  font-size: 16px;
+}
+
+.error-msg {
+  background-color: #eb2020ad;
+  color: #f7b0b0;
+  padding: 3rem;
+  border-radius: 1rem;
+}

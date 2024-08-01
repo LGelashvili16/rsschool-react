@@ -1,0 +1,20 @@
+.people-list-wrapper {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+.people-list {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.people-list-wrapper h2 {
+  color: var(--violet);
+  font-size: 24px;
+}

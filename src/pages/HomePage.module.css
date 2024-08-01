@@ -1,0 +1,10 @@
+.search-results {
+  display: flex;
+}
+
+.error-msg {
+  background-color: #eb2020ad;
+  color: #f7b0b0;
+  padding: 3rem;
+  border-radius: 1rem;
+}
