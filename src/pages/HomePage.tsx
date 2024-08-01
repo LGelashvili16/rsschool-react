@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import PeopleList from "../components/peopleList/PeopleList";
-import Search from "../components/Search";
+import Search from "../components/search/Search";
 import useLocalStorage from "../hooks/useLocalStorage";
 import classes from "./HomePage.module.css";
 import Loader from "../components/ui/Loader";
 import { Outlet, useSearchParams } from "react-router-dom";
 import { usePersonListQuery } from "../api/api";
-import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/store";
+import { personListActions } from "../store/PersonListSlice";
 
 const HomePage = () => {
   const [, setSearchParams] = useSearchParams();
@@ -18,10 +19,12 @@ const HomePage = () => {
   const searchTerm = useSelector(
     (state: RootState) => state.personList.searchTerm,
   );
+  const dispatch = useDispatch<AppDispatch>();
 
   const {
     data: PersonListData,
     isLoading,
+    isFetching,
     isError,
     isUninitialized,
   } = usePersonListQuery({ page: currentPage, searchTerm: searchTerm });
@@ -32,7 +35,13 @@ const HomePage = () => {
     }
   }, [localStorageTerm, currentPage, searchTerm]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (isLoading || isUninitialized) {
+  useEffect(() => {
+    if (PersonListData) {
+      dispatch(personListActions.updatePersonList(PersonListData.results));
+    }
+  }, [dispatch, PersonListData]);
+
+  if (isLoading || isFetching || isUninitialized) {
     return <Loader />;
   }
 

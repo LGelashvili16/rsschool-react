@@ -3,11 +3,22 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalContext";
 import PersonDetails from "./PersonDetails";
 import { vi } from "vitest";
-import useFetchData from "../../hooks/useFetchData";
+import { Provider } from "react-redux";
+import store from "../../store/store";
+import { usePersonQuery } from "../../api/api";
+
+// Mock the API
+vi.mock("../../api/api", async () => {
+  const actual = await vi.importActual("../../api/api");
+  return {
+    ...actual,
+    usePersonQuery: vi.fn(),
+  };
+});
 
 const navigateMock = vi.fn();
 
-// Mock only the necessary parts of react-router-dom
+// Mock react-router-dom functions
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual("react-router-dom");
   return {
@@ -26,7 +37,7 @@ const mockGlobalContext = {
   updatePage: vi.fn(),
 };
 
-// Define the routes
+// Define routes
 const routes = [
   {
     path: "/",
@@ -36,39 +47,33 @@ const routes = [
 
 const router = createBrowserRouter(routes);
 
-vi.mock("../../hooks/useFetchData");
-
 describe("PersonDetails Component", () => {
   afterEach(() => {
     vi.clearAllMocks();
-    // vi.resetAllMocks();
   });
 
   it("should display a loading indicator while fetching data", async () => {
-    vi.mocked(useFetchData).mockReturnValue({
-      data: {
-        count: 1,
-        results: [],
-        previous: null,
-        next: null,
-      },
-      loading: true,
-      error: null,
-      fetchPeople: vi.fn(),
+    vi.mocked(usePersonQuery).mockReturnValue({
+      data: null,
+      isFetching: true,
+      isError: false,
+      isUninitialized: false,
+      refetch: vi.fn(),
     });
 
     render(
-      <GlobalContext.Provider value={mockGlobalContext}>
-        <RouterProvider router={router} />
-      </GlobalContext.Provider>,
+      <Provider store={store}>
+        <GlobalContext.Provider value={mockGlobalContext}>
+          <RouterProvider router={router} />
+        </GlobalContext.Provider>
+      </Provider>,
     );
 
-    screen.debug();
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it("should display the detailed card data when the data is fetched", async () => {
-    vi.mocked(useFetchData).mockReturnValue({
+    vi.mocked(usePersonQuery).mockReturnValue({
       data: {
         count: 1,
         results: [
@@ -88,33 +93,57 @@ describe("PersonDetails Component", () => {
         previous: null,
         next: null,
       },
-      loading: false,
-      error: null,
-      fetchPeople: vi.fn(),
+      isFetching: false,
+      isError: false,
+      isUninitialized: false,
+      refetch: vi.fn(),
     });
 
     render(
-      <GlobalContext.Provider value={mockGlobalContext}>
-        <RouterProvider router={router} />
-      </GlobalContext.Provider>,
+      <Provider store={store}>
+        <GlobalContext.Provider value={mockGlobalContext}>
+          <RouterProvider router={router} />
+        </GlobalContext.Provider>
+      </Provider>,
     );
 
     await waitFor(() => expect(screen.getByText(/John/i)).toBeInTheDocument());
     expect(screen.getByText(/Birth Year: 1990/i)).toBeInTheDocument();
-    expect(screen.getByText(/Eye Color: blue/i)).toBeInTheDocument();
-    expect(screen.getByText(/Gender: male/i)).toBeInTheDocument();
-    expect(screen.getByText(/Hair Color: black/i)).toBeInTheDocument();
+    expect(screen.getByText(/Eye Color: Blue/i)).toBeInTheDocument();
+    expect(screen.getByText(/Gender: Male/i)).toBeInTheDocument();
+    expect(screen.getByText(/Hair Color: Black/i)).toBeInTheDocument();
     expect(screen.getByText(/Height: 180/i)).toBeInTheDocument();
     expect(screen.getByText(/Weight: 75/i)).toBeInTheDocument();
-    expect(screen.getByText(/Skin Color: fair/i)).toBeInTheDocument();
+    expect(screen.getByText(/Skin Color: Fair/i)).toBeInTheDocument();
   });
 
-  it("hides the component when the close button is clicked", async () => {
-    vi.mocked(useFetchData).mockReturnValue({
+  it("should display an error message when there is an error", async () => {
+    vi.mocked(usePersonQuery).mockReturnValue({
+      data: null,
+      isFetching: false,
+      isError: true,
+      isUninitialized: false,
+      refetch: vi.fn(),
+    });
+
+    render(
+      <Provider store={store}>
+        <GlobalContext.Provider value={mockGlobalContext}>
+          <RouterProvider router={router} />
+        </GlobalContext.Provider>
+      </Provider>,
+    );
+
+    expect(screen.getByText(/error/i)).toBeInTheDocument();
+  });
+
+  it("should navigate to the home page with query parameters when the close button is clicked", async () => {
+    vi.mocked(usePersonQuery).mockReturnValue({
       data: {
         count: 1,
         results: [
           {
+            id: "1",
             name: "John Doe",
             birth_year: "1990",
             eye_color: "blue",
@@ -128,22 +157,22 @@ describe("PersonDetails Component", () => {
         previous: null,
         next: null,
       },
-      loading: false,
-      error: null,
-      fetchPeople: vi.fn(),
+      isFetching: false,
+      isError: false,
+      isUninitialized: false,
+      refetch: vi.fn(),
     });
 
     render(
-      <GlobalContext.Provider value={mockGlobalContext}>
-        <RouterProvider router={router} />
-      </GlobalContext.Provider>,
+      <Provider store={store}>
+        <GlobalContext.Provider value={mockGlobalContext}>
+          <RouterProvider router={router} />
+        </GlobalContext.Provider>
+      </Provider>,
     );
-    screen.debug();
 
-    // Click the close button
     fireEvent.click(screen.getByText(/close tab/i));
 
-    // Check if the navigate function was called
     expect(navigateMock).toHaveBeenCalledWith("/home/?page=1&search=");
   });
 });

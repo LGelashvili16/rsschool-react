@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ResultsInterface } from "../interfaces/interfaces";
 
 export interface InitialStateInterface {
@@ -15,10 +15,10 @@ const personSlice = createSlice({
   name: "person",
   initialState: initialState,
   reducers: {
-    updatePersonDetails: (state, action) => {
+    updatePersonDetails: (state, action: PayloadAction<ResultsInterface[]>) => {
       state.person = action.payload;
     },
-    updateSearchedPerson: (state, action) => {
+    updateSearchedPerson: (state, action: PayloadAction<string>) => {
       state.searchedPerson = action.payload;
     },
   },

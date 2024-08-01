@@ -1,5 +1,7 @@
 export interface ResultsInterface {
-  [key: string]: string | string[];
+  name: string;
+  isSelected?: boolean;
+  [key: string]: string | string[] | boolean | undefined;
 }
 
 export interface SWAPIResponseInterface {

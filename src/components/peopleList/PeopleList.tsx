@@ -1,16 +1,18 @@
 import classes from "./PeopleList.module.css";
 import Person from "./Person";
-import Pagination from "../Pagination";
+import Pagination from "../pagination/Pagination";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import Flyout from "../flyout/Flyout";
+import { ResultsInterface } from "../../interfaces/interfaces";
 
 const PeopleList = ({
   data,
 }: {
   data: {
     count: number;
-    results: Record<string, unknown>[];
+    results: ResultsInterface[];
     previous: string | null;
     next: string | null;
   };
@@ -53,6 +55,8 @@ const PeopleList = ({
         })}
       </div>
       {data.results.length > 0 && <Pagination count={data.count} />}
+
+      <Flyout />
     </div>
   );
 };

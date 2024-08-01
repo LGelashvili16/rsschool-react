@@ -3,6 +3,8 @@ import PeopleList from "./PeopleList";
 import "@testing-library/jest-dom";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalContext";
+import { Provider } from "react-redux";
+import store from "../../store/store";
 
 // Mock data
 const mockDataWithPeople = {
@@ -24,23 +26,25 @@ const mockDataWithoutPeople = {
 };
 
 // Mock fetchPeople function
-const mockFetchPeople = vi.fn();
+// const mockFetchPeople = vi.fn();
 
 describe("PeopleList component", () => {
   const routes = [
     {
       path: "/",
       element: (
-        <GlobalContext.Provider
-          value={{
-            pageQuery: 1,
-            searchQuery: "",
-            updateQueryStringHandler: vi.fn(),
-            updatePage: vi.fn(),
-          }}
-        >
-          <PeopleList data={mockDataWithPeople} fetchPeople={mockFetchPeople} />
-        </GlobalContext.Provider>
+        <Provider store={store}>
+          <GlobalContext.Provider
+            value={{
+              pageQuery: 1,
+              searchQuery: "",
+              updateQueryStringHandler: vi.fn(),
+              updatePage: vi.fn(),
+            }}
+          >
+            <PeopleList data={mockDataWithPeople} />
+          </GlobalContext.Provider>
+        </Provider>
       ),
     },
   ];
@@ -51,7 +55,7 @@ describe("PeopleList component", () => {
 
     // Check if the correct number of Person components are rendered
     const personCards = screen.getAllByRole("link");
-    expect(personCards).toHaveLength(mockDataWithPeople.results.length);
+    expect(personCards).toHaveLength(mockDataWithPeople.results.length + 1);
   });
 
   it("displays an appropriate message if no cards are present", () => {
@@ -60,19 +64,18 @@ describe("PeopleList component", () => {
       {
         path: "/",
         element: (
-          <GlobalContext.Provider
-            value={{
-              pageQuery: 1,
-              searchQuery: "",
-              updateQueryStringHandler: vi.fn(),
-              updatePage: vi.fn(),
-            }}
-          >
-            <PeopleList
-              data={mockDataWithoutPeople}
-              fetchPeople={mockFetchPeople}
-            />
-          </GlobalContext.Provider>
+          <Provider store={store}>
+            <GlobalContext.Provider
+              value={{
+                pageQuery: 1,
+                searchQuery: "",
+                updateQueryStringHandler: vi.fn(),
+                updatePage: vi.fn(),
+              }}
+            >
+              <PeopleList data={mockDataWithoutPeople} />
+            </GlobalContext.Provider>
+          </Provider>
         ),
       },
     ];

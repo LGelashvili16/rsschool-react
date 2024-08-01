@@ -1,0 +1,39 @@
+.flyout {
+  position: fixed;
+  bottom: 1vh;
+  transform: translateY(100px);
+  padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  align-items: center;
+  background: var(--flyout-background);
+  color: black;
+  border: 2px solid var(--violet);
+  border-radius: 1rem;
+  opacity: 0;
+  transition:
+    transform 0.3s,
+    opacity 0.3s;
+}
+
+.green-sign {
+  color: rgb(96, 66, 202);
+}
+.red-sign {
+  color: rgb(247, 7, 7);
+}
+
+.flyout-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hide {
+  display: none;
+}

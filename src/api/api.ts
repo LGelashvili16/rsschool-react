@@ -6,7 +6,10 @@ export const api = createApi({
     baseUrl: "https://swapi.dev/api/",
   }),
   endpoints: (build) => ({
-    personList: build.query<void, { page?: number; searchTerm?: string }>({
+    personList: build.query<
+      SWAPIResponseInterface,
+      { page?: number; searchTerm?: string }
+    >({
       query: ({ page, searchTerm }) => {
         return `people/?page=${page}&search=${searchTerm}`;
       },

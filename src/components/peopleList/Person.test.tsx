@@ -1,31 +1,11 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { vi } from "vitest";
 import Person from "./Person";
-import PersonDetails from "./PersonDetails";
+import { Provider } from "react-redux";
+import store from "../../store/store";
 
-// Mock useFetchData hook
-vi.mock("../../hooks/useFetchData", () => ({
-  default: vi.fn(() => ({
-    data: {
-      count: 1,
-      results: [
-        {
-          name: "John Doe",
-          eye_color: "blue",
-          height: "180",
-          mass: "75",
-          birth_year: "1990",
-        },
-      ],
-      previous: null,
-      next: null,
-    },
-    loading: false,
-    error: null,
-    fetchPeople: vi.fn(),
-  })),
-}));
+const MockPersonDetails = () => <div>Person Details</div>;
 
 const mockPerson = {
   name: "John Doe",
@@ -42,7 +22,7 @@ const routes = [
   },
   {
     path: "/home/:name",
-    element: <PersonDetails />,
+    element: <MockPersonDetails />,
   },
 ];
 
@@ -55,7 +35,11 @@ describe("Person Component", () => {
   });
 
   it("renders the relevant card data", () => {
-    render(<RouterProvider router={router} />);
+    render(
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>,
+    );
 
     // Check if all data is rendered correctly
     expect(screen.getByText("John Doe")).toBeInTheDocument();
@@ -65,14 +49,19 @@ describe("Person Component", () => {
     expect(screen.getByText("Birth Year: 1990")).toBeInTheDocument();
   });
 
-  it("opens a detailed card component on click", () => {
-    render(<RouterProvider router={router} />);
+  it("opens a detailed card component on click", async () => {
+    render(
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>,
+    );
     const linkElement = screen.getByRole("link");
 
     // Simulate a click on the link
     fireEvent.click(linkElement);
 
-    // Check if the URL is updated correctly
-    expect(screen.getByText(/Person Details/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(/Person Details/i)).toBeInTheDocument();
+    });
   });
 });

@@ -28,6 +28,8 @@
   --main-btn-background: #1a1a1a;
   --btn-text-color: #fff;
 
+  --flyout-background: linear-gradient(to right, #97b1da, #646cff);
+
   --violet: #646cff;
   --violet2: #535bf2;
 }
@@ -54,6 +56,7 @@
   --card-text-color: #303030;
   --card-details-title-color: var(--violet);
   --card-details-text-color: #3f3f3f;
+  --flyout-background: linear-gradient(to right, #cdd3df, #a6aaf3);
 
   color-scheme: light;
   background: #fff;
