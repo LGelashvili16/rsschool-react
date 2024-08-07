@@ -1,17 +1,14 @@
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import classes from "./PersonDetails.module.css";
 import { useEffect } from "react";
-import Loader from "../ui/Loader";
+import Loader from "../../components/ui/Loader";
 import { usePersonQuery } from "../../api/api";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { personSliceActions } from "../../store/PersonSlice";
+import { useRouter } from "next/router";
 
 const PersonDetails = () => {
-  const navigate = useNavigate();
-  const params = useParams();
-  const [, setSearchParams] = useSearchParams();
-
+  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const searchedPerson = useSelector(
     (state: RootState) => state.person.searchedPerson,
@@ -28,10 +25,11 @@ const PersonDetails = () => {
   });
 
   useEffect(() => {
-    if (params.id) {
-      setSearchParams({ details: params.id });
+    if (router.query.id && router.query.id === "string") {
+      const params = new URLSearchParams({ details: router.query.id });
+      router.push(`/home?${params.toString()}`, undefined, { shallow: true });
     }
-  }, [params.id, setSearchParams]);
+  }, [router.query.id, router]);
 
   useEffect(() => {
     if (data) {
@@ -40,7 +38,7 @@ const PersonDetails = () => {
   }, [data, dispatch]);
 
   const closeTabHandler = () => {
-    navigate(`/home/?page=${currentPage}&search=${searchTerm}`);
+    router.push(`/home/?page=${currentPage}&search=${searchTerm}`);
   };
 
   if (isFetching || isUninitialized) {

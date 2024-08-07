@@ -4,7 +4,10 @@ const useLocalStorage = (
   key: string,
 ): [string | null, React.Dispatch<React.SetStateAction<string>>] => {
   const [localStorageTerm, setLocalStorageTerm] = useState(() => {
-    const item = localStorage.getItem(key);
+    if (typeof window === "undefined") {
+      return;
+    }
+    const item = window.localStorage.getItem(key);
     return item ? JSON.parse(item) : "";
   });
 

@@ -50,8 +50,15 @@
   transition: color 0.2s;
 }
 
-.person-link {
+.person-btn {
+  font-family: inherit;
   border: 1px solid var(--violet);
   border-radius: 0.5rem;
   padding: 0.7rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.person-btn:active {
+  transform: scale(0.9);
 }

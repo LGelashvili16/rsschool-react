@@ -1,11 +1,11 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalContext";
-import PersonDetails from "./PersonDetails";
 import { vi } from "vitest";
 import { Provider } from "react-redux";
 import store from "../../store/store";
 import { usePersonQuery } from "../../api/api";
+import PersonDetails from "./[personName]";
 
 // Mock the API
 vi.mock("../../api/api", async () => {

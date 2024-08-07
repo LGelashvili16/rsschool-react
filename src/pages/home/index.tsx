@@ -4,22 +4,25 @@ import Search from "../../components/search/Search";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import classes from "./HomePage.module.css";
 import Loader from "../../components/ui/Loader";
-// import { Outlet, useSearchParams } from "react-router-dom";
 import { usePersonListQuery } from "../../api/api";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { personListActions } from "../../store/PersonListSlice";
+import { useRouter } from "next/router";
+import PersonDetails from "./[personName]";
 
 const HomePage = () => {
-  // const [, setSearchParams] = useSearchParams();
-  // const [localStorageTerm] = useLocalStorage("searchedTerm");
+  const router = useRouter();
+
+  const dispatch = useDispatch<AppDispatch>();
   const currentPage = useSelector(
     (state: RootState) => state.personList.currentPage,
   );
   const searchTerm = useSelector(
     (state: RootState) => state.personList.searchTerm,
   );
-  const dispatch = useDispatch<AppDispatch>();
+
+  const [localStorageTerm] = useLocalStorage("searchedTerm");
 
   const {
     data: PersonListData,
@@ -29,11 +32,15 @@ const HomePage = () => {
     isUninitialized,
   } = usePersonListQuery({ page: currentPage, searchTerm: searchTerm });
 
-  // useEffect(() => {
-  //   if (localStorageTerm === "" || localStorageTerm === null) {
-  //     setSearchParams({ page: String(currentPage), search: searchTerm });
-  //   }
-  // }, [localStorageTerm, currentPage, searchTerm]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (localStorageTerm === "" || localStorageTerm === null) {
+      const params = new URLSearchParams({
+        page: String(currentPage),
+        search: searchTerm,
+      });
+      router.push(`/home?${params.toString()}`, undefined, { shallow: true });
+    }
+  }, [localStorageTerm, currentPage, searchTerm]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (PersonListData) {
@@ -59,7 +66,9 @@ const HomePage = () => {
 
       <section className={classes["search-results"]}>
         <PeopleList data={PersonListData} />
-        <div className={classes["person-details"]}>{/* <Outlet /> */}</div>
+        <div className={classes["person-details"]}>
+          {router.query.personName && <PersonDetails />}
+        </div>
       </section>
     </>
   );

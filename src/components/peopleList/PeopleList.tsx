@@ -1,11 +1,11 @@
 import classes from "./PeopleList.module.css";
 import Person from "./Person";
 import Pagination from "../pagination/Pagination";
-// import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import Flyout from "../flyout/Flyout";
 import { ResultsInterface } from "../../interfaces/interfaces";
+import { useRouter } from "next/router";
 
 const PeopleList = ({
   data,
@@ -17,8 +17,8 @@ const PeopleList = ({
     next: string | null;
   };
 }) => {
-  // const navigate = useNavigate();
-  // const params = useParams();
+  const router = useRouter();
+
   const currentPage = useSelector(
     (state: RootState) => state.personList.currentPage,
   );
@@ -27,15 +27,24 @@ const PeopleList = ({
   );
 
   const sectionClickHandler = () => {
-    // if (params.id) {
-    //   navigate(`/home/?page=${currentPage}&search=${searchTerm}`);
-    // }
+    if (router.query.personName) {
+      router.push(
+        `/home/?page=${currentPage}&search=${searchTerm}`,
+        undefined,
+        { shallow: true },
+      );
+    }
   };
 
   const sectionKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    // if (e.key === "Enter" || e.key === " ") {
-    //   params.id && navigate(`/home/?page=${currentPage}&search=${searchTerm}`);
-    // }
+    if (e.key === "Enter" || e.key === " ") {
+      router.query.personName &&
+        router.push(
+          `/home/?page=${currentPage}&search=${searchTerm}`,
+          undefined,
+          { shallow: true },
+        );
+    }
   };
 
   return (

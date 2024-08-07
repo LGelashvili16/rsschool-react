@@ -1,19 +1,19 @@
 import React from "react";
 import classes from "./Person.module.css";
-// import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { personSliceActions } from "../../store/PersonSlice";
 import { fixIdSpacing } from "../../utils/helper";
 import { personListActions } from "../../store/PersonListSlice";
 import { ResultsInterface } from "../../interfaces/interfaces";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface PersonProps {
   person: ResultsInterface;
 }
 
 const Person = ({ person }: PersonProps) => {
+  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
   const selectedPersons = useSelector(
@@ -27,6 +27,10 @@ const Person = ({ person }: PersonProps) => {
   const clickHandler = (e: React.MouseEvent) => {
     e.stopPropagation();
     dispatch(personSliceActions.updateSearchedPerson(person.name));
+
+    const params = new URLSearchParams({ personName: person.name });
+
+    router.push(`/home?${params.toString()}`, undefined, { shallow: true });
   };
 
   const formFieldsChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,13 +60,10 @@ const Person = ({ person }: PersonProps) => {
       <p>Height: {person.height as string}cm</p>
       <p>Mass: {person.mass as string}Kg</p>
       <p>Birth Year: {person.birth_year as string}</p>
-      <Link
-        className={classes["person-link"]}
-        href={`/home/${person.name}`}
-        onClick={clickHandler}
-      >
+
+      <button className={classes["person-btn"]} onClick={clickHandler}>
         Open
-      </Link>
+      </button>
     </div>
   );
 };
