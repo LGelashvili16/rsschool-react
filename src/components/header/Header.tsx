@@ -1,19 +1,17 @@
-import { NavLink } from "react-router-dom";
-
 import classes from "./Header.module.css";
-import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeContext";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const { isDark, toggleThemeHandler } = useContext(ThemeContext);
+  const router = useRouter();
 
   return (
     <header className={classes.header}>
       <div className={classes.wrapper}>
-        <div className={classes.logo}>
-          <Link to="/home">Logo</Link>
-        </div>
+        <div className={classes.logo}>{<Link href="/">Logo</Link>}</div>
 
         <div className={classes["nav-theme-wrapper"]}>
           <div className={classes["theme-control"]}>
@@ -25,20 +23,20 @@ const Header = () => {
           <nav className={classes.nav}>
             <ul>
               <li>
-                <NavLink
-                  to="/home"
-                  className={({ isActive }) => (isActive ? classes.active : "")}
+                <Link
+                  href="/home"
+                  className={router.pathname === "/home" ? classes.active : ""}
                 >
                   Home
-                </NavLink>
+                </Link>
               </li>
               <li>
-                <NavLink
-                  to="/about"
-                  className={({ isActive }) => (isActive ? classes.active : "")}
+                <Link
+                  href="/about"
+                  className={router.pathname === "/about" ? classes.active : ""}
                 >
                   About
-                </NavLink>
+                </Link>
               </li>
             </ul>
           </nav>

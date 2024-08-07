@@ -1,7 +1,7 @@
 import classes from "./PeopleList.module.css";
 import Person from "./Person";
 import Pagination from "../pagination/Pagination";
-import { useNavigate, useParams } from "react-router-dom";
+// import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import Flyout from "../flyout/Flyout";
@@ -17,8 +17,8 @@ const PeopleList = ({
     next: string | null;
   };
 }) => {
-  const navigate = useNavigate();
-  const params = useParams();
+  // const navigate = useNavigate();
+  // const params = useParams();
   const currentPage = useSelector(
     (state: RootState) => state.personList.currentPage,
   );
@@ -27,15 +27,15 @@ const PeopleList = ({
   );
 
   const sectionClickHandler = () => {
-    if (params.id) {
-      navigate(`/home/?page=${currentPage}&search=${searchTerm}`);
-    }
+    // if (params.id) {
+    //   navigate(`/home/?page=${currentPage}&search=${searchTerm}`);
+    // }
   };
 
   const sectionKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter" || e.key === " ") {
-      params.id && navigate(`/home/?page=${currentPage}&search=${searchTerm}`);
-    }
+    // if (e.key === "Enter" || e.key === " ") {
+    //   params.id && navigate(`/home/?page=${currentPage}&search=${searchTerm}`);
+    // }
   };
 
   return (
