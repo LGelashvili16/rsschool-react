@@ -48,10 +48,6 @@ const HomePage = () => {
     }
   }, [dispatch, PersonListData]);
 
-  if (isLoading || isFetching || isUninitialized) {
-    return <Loader />;
-  }
-
   if (isError) {
     return (
       <div className={classes["error-msg"]}>
@@ -64,12 +60,16 @@ const HomePage = () => {
     <>
       <Search />
 
-      <section className={classes["search-results"]}>
-        <PeopleList data={PersonListData} />
-        <div className={classes["person-details"]}>
-          {router.query.personName && <PersonDetails />}
-        </div>
-      </section>
+      {(isLoading || isFetching || isUninitialized) && <Loader />}
+
+      {PersonListData && (
+        <section className={classes["search-results"]}>
+          <PeopleList data={PersonListData} />
+          <div className={classes["person-details"]}>
+            {router.query.personName && <PersonDetails />}
+          </div>
+        </section>
+      )}
     </>
   );
 };

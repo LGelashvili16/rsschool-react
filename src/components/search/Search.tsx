@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import classes from "./Search.module.css";
 import Button from "../ui/Button";
 import useLocalStorage from "../../hooks/useLocalStorage";
-// import { useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { personListActions } from "../../store/PersonListSlice";
+import { useRouter } from "next/router";
 
 const Search = () => {
-  // const [, setSearchParams] = useSearchParams();
+  const router = useRouter();
   const [InputValue, setInputValue] = useState("");
   const [throwError, setThrowError] = useState(false);
   const [localStorageTerm, setLocalStorageTerm] =
@@ -20,7 +20,12 @@ const Search = () => {
     if (localStorageTerm) {
       setInputValue(localStorageTerm);
       dispatch(personListActions.updateSearchTerm(localStorageTerm));
-      // setSearchParams({ page: String(1), search: localStorageTerm });
+      const params = new URLSearchParams({
+        page: String(1),
+        search: localStorageTerm,
+      });
+
+      router.push(`home?${params}`, undefined, { shallow: true });
     }
   }, [localStorageTerm]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -31,9 +36,16 @@ const Search = () => {
 
     dispatch(personListActions.updateCurrentPage(1));
     dispatch(personListActions.updateSearchTerm(inputValue));
-    // setSearchParams({ page: String(1), search: inputValue });
     setLocalStorageTerm(inputValue);
     setInputValue(inputValue);
+
+    const params = new URLSearchParams({
+      page: String(1),
+      search: inputValue,
+    });
+
+    router.push(`home?${params}`, undefined, { shallow: true });
+    console.log(inputValue);
   };
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -30,14 +30,6 @@ const personListSlice = createSlice({
         (person) => person.name === action.payload.name,
       );
 
-      // if (!existingPerson) {
-      //   state.selectedPersons.push(action.payload);
-      // }
-
-      // if (existingPerson) {
-      //   existingPerson.isSelected = action.payload.isSelected;
-      // }
-
       if (existingPerson) {
         existingPerson.isSelected = action.payload.isSelected;
       } else {

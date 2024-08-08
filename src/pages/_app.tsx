@@ -5,6 +5,7 @@ import store from "../store/store";
 import ThemeContextProvider from "../context/ThemeContext";
 import Head from "next/head";
 import RootLayout from "../layouts/RootLayout";
+import ErrorBoundary from "../components/error/ErrorBoundary";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -14,13 +15,15 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Provider store={store}>
-        <ThemeContextProvider>
-          <RootLayout>
-            <Component {...pageProps} />
-          </RootLayout>
-        </ThemeContextProvider>
-      </Provider>
+      <ErrorBoundary>
+        <Provider store={store}>
+          <ThemeContextProvider>
+            <RootLayout>
+              <Component {...pageProps} />
+            </RootLayout>
+          </ThemeContextProvider>
+        </Provider>
+      </ErrorBoundary>
     </>
   );
 }
