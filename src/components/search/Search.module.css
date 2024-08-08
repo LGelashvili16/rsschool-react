@@ -1,0 +1,28 @@
+.throw-error {
+  align-self: flex-end;
+}
+
+.search-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.search-form input {
+  padding: 0.7rem;
+  font-size: 18px;
+  border: 1px solid #808080;
+  border-radius: 8px;
+}
+
+.search-form input:hover {
+  border: 1px solid var(--violet);
+}

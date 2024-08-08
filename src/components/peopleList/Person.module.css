@@ -1,0 +1,64 @@
+.person {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: var(--card-background);
+  border-radius: 0.5rem;
+  transition: border 0.2s;
+}
+
+.person-form {
+  padding: 0.5rem;
+  align-self: flex-start;
+  display: flex;
+  gap: 1rem;
+}
+
+.person-form input {
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
+}
+
+.person::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  background: linear-gradient(to top right, var(--violet), #b807e45e);
+  border-radius: calc(0.5rem + 3px);
+  transition: 0.3s;
+  z-index: -1;
+}
+
+.person:hover::after {
+  filter: blur(10px);
+  background: linear-gradient(to top right, var(--violet), #b807e4e8);
+}
+
+.person h2 {
+  color: var(--card-title-color);
+  font-size: 18px;
+  transition: color 0.2s;
+}
+
+.person p {
+  font-size: 16px;
+  color: var(--card-text-color);
+  transition: color 0.2s;
+}
+
+.person-btn {
+  font-family: inherit;
+  border: 1px solid var(--violet);
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.person-btn:active {
+  transform: scale(0.9);
+}
