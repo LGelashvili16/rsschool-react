@@ -1,6 +1,4 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { GlobalContext } from "../../context/GlobalContext";
 import { vi } from "vitest";
 import { Provider } from "react-redux";
 import store from "../../store/store";
@@ -16,36 +14,17 @@ vi.mock("../../api/api", async () => {
   };
 });
 
-const navigateMock = vi.fn();
-
-// Mock react-router-dom functions
-vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual("react-router-dom");
-  return {
-    ...actual,
-    useNavigate: () => navigateMock,
-    useParams: () => ({ id: "1" }),
-    useSearchParams: () => [new URLSearchParams(), vi.fn()],
-  };
-});
-
-// Mock GlobalContext values
-const mockGlobalContext = {
-  pageQuery: 1,
-  searchQuery: "",
-  updateQueryStringHandler: vi.fn(),
-  updatePage: vi.fn(),
+const pushMock = vi.fn();
+const useRouterMock = {
+  push: pushMock,
+  query: { id: "1" },
+  asPath: "/",
+  route: "/",
 };
 
-// Define routes
-const routes = [
-  {
-    path: "/",
-    element: <PersonDetails />,
-  },
-];
-
-const router = createBrowserRouter(routes);
+vi.mock("next/router", () => ({
+  useRouter: () => useRouterMock,
+}));
 
 describe("PersonDetails Component", () => {
   afterEach(() => {
@@ -63,9 +42,7 @@ describe("PersonDetails Component", () => {
 
     render(
       <Provider store={store}>
-        <GlobalContext.Provider value={mockGlobalContext}>
-          <RouterProvider router={router} />
-        </GlobalContext.Provider>
+        <PersonDetails />
       </Provider>,
     );
 
@@ -101,9 +78,7 @@ describe("PersonDetails Component", () => {
 
     render(
       <Provider store={store}>
-        <GlobalContext.Provider value={mockGlobalContext}>
-          <RouterProvider router={router} />
-        </GlobalContext.Provider>
+        <PersonDetails />
       </Provider>,
     );
 
@@ -128,9 +103,7 @@ describe("PersonDetails Component", () => {
 
     render(
       <Provider store={store}>
-        <GlobalContext.Provider value={mockGlobalContext}>
-          <RouterProvider router={router} />
-        </GlobalContext.Provider>
+        <PersonDetails />
       </Provider>,
     );
 
@@ -165,14 +138,12 @@ describe("PersonDetails Component", () => {
 
     render(
       <Provider store={store}>
-        <GlobalContext.Provider value={mockGlobalContext}>
-          <RouterProvider router={router} />
-        </GlobalContext.Provider>
+        <PersonDetails />
       </Provider>,
     );
 
     fireEvent.click(screen.getByText(/close tab/i));
 
-    expect(navigateMock).toHaveBeenCalledWith("/home/?page=1&search=");
+    expect(pushMock).toHaveBeenCalledWith("/home/?page=1&search=");
   });
 });

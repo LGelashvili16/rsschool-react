@@ -29,7 +29,6 @@ const Person = ({ person }: PersonProps) => {
     dispatch(personSliceActions.updateSearchedPerson(person.name));
 
     const params = new URLSearchParams({ personName: person.name });
-
     router.push(`/home?${params.toString()}`, undefined, { shallow: true });
   };
 

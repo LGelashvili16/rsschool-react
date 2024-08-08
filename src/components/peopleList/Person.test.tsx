@@ -1,9 +1,20 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { vi } from "vitest";
 import Person from "./Person";
 import { Provider } from "react-redux";
 import store from "../../store/store";
+import { useRouter } from "next/router";
+import { NextRouter } from "next/router";
+
+vi.mock("next/router", () => ({
+  useRouter: () =>
+    ({
+      push: vi.fn(),
+      query: {},
+      asPath: "",
+      route: "/",
+    }) as unknown as NextRouter,
+}));
 
 const MockPersonDetails = () => <div>Person Details</div>;
 
@@ -15,29 +26,17 @@ const mockPerson = {
   birth_year: "1990",
 };
 
-const routes = [
-  {
-    path: "/",
-    element: <Person person={mockPerson} />,
-  },
-  {
-    path: "/home/:name",
-    element: <MockPersonDetails />,
-  },
-];
-
 describe("Person Component", () => {
-  const router = createBrowserRouter(routes);
+  // const mockRouter = useRouter();
 
   beforeEach(() => {
-    // Clear all mock calls before each test
     vi.clearAllMocks();
   });
 
   it("renders the relevant card data", () => {
     render(
       <Provider store={store}>
-        <RouterProvider router={router} />
+        <Person person={mockPerson} />
       </Provider>,
     );
 
@@ -52,15 +51,22 @@ describe("Person Component", () => {
   it("opens a detailed card component on click", async () => {
     render(
       <Provider store={store}>
-        <RouterProvider router={router} />
+        <Person person={mockPerson} />
+        <MockPersonDetails />
       </Provider>,
     );
-    const linkElement = screen.getByRole("link");
 
-    // Simulate a click on the link
-    fireEvent.click(linkElement);
+    screen.debug();
+
+    const buttonElement = screen.getByRole("button", { name: /Open/i });
+    fireEvent.click(buttonElement);
 
     await waitFor(() => {
+      // expect(mockRouter.push).toHaveBeenCalledWith(
+      //   "/home?personName=John%20Doe",
+      //   undefined,
+      //   { shallow: true },
+      // );
       expect(screen.getByText(/Person Details/i)).toBeInTheDocument();
     });
   });

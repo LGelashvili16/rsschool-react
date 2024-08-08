@@ -4,16 +4,16 @@ import Search from "./Search";
 import { Provider } from "react-redux";
 import store from "../../store/store";
 
-const navigateMock = vi.fn();
-vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual("react-router-dom");
-  return {
-    ...actual,
-    useNavigate: () => navigateMock,
-    useParams: () => ({ id: "1" }),
-    useSearchParams: () => [new URLSearchParams(), vi.fn()],
-  };
-});
+const useRouterMock = {
+  push: vi.fn(),
+  query: {},
+  asPath: "/",
+  route: "/",
+};
+
+vi.mock("next/router", () => ({
+  useRouter: () => useRouterMock,
+}));
 
 describe("Search Component", () => {
   beforeEach(() => {
